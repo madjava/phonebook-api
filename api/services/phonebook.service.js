@@ -20,8 +20,17 @@ const createNew = async (contact) => {
     return newcontact;
 }
 
+const update = async (contactData) => {
+    if (!contactData || !contactData.id) {
+        throw new PhonebookError('Invalid Data', 400);
+    }
+    let contact = data.find(c => c.id === contactData.id);
+    return Object.assign(contact, contactData);
+}
+
 module.exports = {
     fetchContact,
     fetchAll,
-    createNew
+    createNew,
+    update
 }

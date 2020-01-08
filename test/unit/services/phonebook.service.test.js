@@ -40,8 +40,29 @@ describe('Phonebook Service', () => {
     });
 
     describe('update', () => {
-        test('should update existing contact detail', () => {
-            
+        test('should update existing contact detail', async () => {
+            const payload = {
+                id: 1,
+                phoneNumber: "07000000444"
+            };
+            const contact = await phonebookService.update(payload);
+
+            const { firstName, lastName, phoneNumber, postCode } = contact;
+            expect(firstName).toBe('John');
+            expect(lastName).toBe('Doe');
+            expect(phoneNumber).toBe('07000000444');
+            expect(postCode).toBe('E1 6AN');
+        });
+
+        test('should return 400 if invalid id is provided', async () => {
+            const payload = {
+                phoneNumber: "07000000444"
+            };
+            try {
+                await phonebookService.update(payload);
+            } catch (error) {
+                expect(error.statusCode).toBe(400);
+            }
         });
     });
 });
