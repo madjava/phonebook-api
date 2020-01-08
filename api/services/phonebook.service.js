@@ -1,10 +1,10 @@
 const data = require('../../data/contacts.json');
 
-const fetchContact = (phonenumber) => {
-    return data.find(c => c.phoneNumber === phonenumber);
+const fetchContact = async (phoneNumber) => {
+    return data.find(c => c.phoneNumber === phoneNumber);
 }
 
-const fetchAll = () => {
+const fetchAll = async () => {
     return data;
 }
 

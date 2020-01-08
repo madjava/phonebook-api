@@ -1,12 +1,13 @@
 const express = require('express');
 const app = express();
 const helmet = require('helmet');
-const csrfProtection = require('@authentication/csrf-protection');
+const cors = require('cors');
 
 const phoneBookRoutes = require('./routes/phonebook');
+const ErrorMiddleWare = require('./middlewares/error.middleware');
 
 app.use(helmet());
-app.use(csrfProtection());
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -17,9 +18,10 @@ app.get('/', (req, res) => {
     res.sendStatus(200);
 });
 
+ErrorMiddleWare(app);
+
 app.use((err, req, res, next) => {
     res.sendStatus(500);
 });
-
 
 module.exports = app;

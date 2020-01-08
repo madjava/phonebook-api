@@ -1,0 +1,16 @@
+[
+    {
+        "firstName": "John",
+        "lastName": "Doe",
+        "phoneNumber": "07000000111",
+        "city": "London",
+        "postCode": "E1 6AN"
+    },
+    {
+        "firstName": "Jane",
+        "lastName": "Doe",
+        "phoneNumber": "07000000222",
+        "city": "London",
+        "postCode": "E1 7AE"
+    }
+]
