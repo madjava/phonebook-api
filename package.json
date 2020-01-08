@@ -1,0 +1,28 @@
+{
+  "name": "phonebook-api",
+  "version": "1.0.0",
+  "description": "Code Challange - Phonebook API",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest -i",
+    "test-watch": "jest  -i -c --watchAll"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "keywords": [],
+  "author": "Felix E. Eyetan",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "@authentication/csrf-protection": "0.0.3",
+    "express": "^4.17.1",
+    "express-validator": "^6.3.1",
+    "helmet": "^3.21.2",
+    "mongodb-memory-server": "^6.2.1",
+    "mongoose": "^4.13.20"
+  }
+}
