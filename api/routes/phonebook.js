@@ -48,7 +48,7 @@ route.post('/contact', async (req, res) => {
     }
     try {
         contact = phonebookService.update(contact);
-        res.status(201).json(contact);
+        res.status(202).json(contact);
     } catch (error) {
         next(error);
     }

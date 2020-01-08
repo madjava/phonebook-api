@@ -83,4 +83,18 @@ describe('Phonebook API', () => {
                 .expect(400);
         });
     });
-});
+
+    describe('POST: /contact', () => {
+        test('should update contact detail when valid input is provided', () => {
+            const payload = {
+                id: 1,
+                phoneNumber: "07000000444"
+            };
+            return request(app)
+                .post('/api/contact')
+                .send(payload)
+                .expect(202);
+        });
+    });
+
+  });
