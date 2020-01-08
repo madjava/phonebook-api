@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest -i",
-    "test-watch": "jest  -i -c --watchAll"
+    "test-watch": "jest  -i -c --watch"
   },
   "jest": {
     "testEnvironment": "node"
@@ -23,6 +23,6 @@
     "express-validator": "^6.3.1",
     "helmet": "^3.21.2",
     "mongodb-memory-server": "^6.2.1",
-    "mongoose": "^4.13.20"
+    "mongoose": "^5.8.5"
   }
 }

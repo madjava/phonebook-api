@@ -8,7 +8,7 @@ describe('Phonebook API', () => {
             .expect(200);
     });
 
-    describe('/api', () => {
+    describe('GET: /api', () => {
         test('should hit the base /api route', () => {
             return request(app)
                 .get('/api')
