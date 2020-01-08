@@ -1,4 +1,4 @@
-const data = require('../../data/contacts.json');
+let data = require('../../data/contacts.json');
 const PhonebookError = require('../errors/phonebook.error');
 
 const fetchContact = async (phoneNumber) => {
@@ -13,14 +13,14 @@ const fetchAll = async () => {
     return data;
 }
 
-const createNew = async (contact) => {
+const createContact = async (contact) => {
     const newcontact = { ...contact };
     newcontact.id = 3;
     data.push(newcontact);
     return newcontact;
 }
 
-const update = async (contactData) => {
+const updateContact = async (contactData) => {
     if (!contactData || !contactData.id) {
         throw new PhonebookError('Invalid Data', 400);
     }
@@ -28,9 +28,17 @@ const update = async (contactData) => {
     return Object.assign(contact, contactData);
 }
 
+const deleteContact = async (id) => {
+    if(!id) {
+        throw new PhonebookError('Invalid Data', 400);
+    }
+    data = data.filter(c => c.id !== id);
+}
+
 module.exports = {
     fetchContact,
     fetchAll,
-    createNew,
-    update
+    createContact,
+    updateContact,
+    deleteContact
 }

@@ -10,7 +10,7 @@ route.get('/', (req, res) => {
 });
 
 route.get('/contact/:phonenumber', async (req, res, next) => {
-    const { phonenumber } = req.params;
+    const phonenumber = req.params.phonenumber;
     if (!phonenumber) {
         return res.sendStatus(400);
     }
@@ -31,14 +31,14 @@ route.put('/contact', async (req, res, next) => {
         return res.status(400).send(`${contact.id} already exists.`);
     }
     try {
-        contact = phonebookService.createNew(contact);
+        contact = phonebookService.createContact(contact);
         res.status(201).json(contact);
     } catch (error) {
         next(error);
     }
 });
 
-route.post('/contact', async (req, res) => {
+route.post('/contact', async (req, res, next) => {
     let contact = req.body;
     if (!contact) {
         return res.status(400).send('Valid Data Required');
@@ -47,12 +47,21 @@ route.post('/contact', async (req, res) => {
         return res.status(404).send('Invalid Data.');
     }
     try {
-        contact = phonebookService.update(contact);
+        contact = phonebookService.updateContact(contact);
         res.status(202).json(contact);
     } catch (error) {
         next(error);
     }
 });
-// route.delete('/contact/:phonenumber', async (req, res) => {});
+
+route.delete('/contact/:id', async (req, res, next) => {
+    const id = req.params.id;
+    try {
+        await phonebookService.deleteContact(id);
+        res.sendStatus(200);
+    } catch (error) {
+        next(error);
+    }
+});
 
 module.exports = route;

@@ -97,4 +97,14 @@ describe('Phonebook API', () => {
         });
     });
 
-  });
+
+    describe('DELETE: /contact/:id', () => {
+        test('should remove the requested contact detail', () => {
+            const id = 1;
+            return request(app)
+                .delete(`/api/contact/${id}`)
+                .expect(200);
+        });
+    });
+
+});

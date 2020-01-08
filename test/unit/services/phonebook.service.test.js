@@ -23,7 +23,7 @@ describe('Phonebook Service', () => {
         });
     });
 
-    describe('createNew', () => {
+    describe('createContact', () => {
         test('should create a new contact detail with diven payload', async () => {
             const payload = {
                 firstName: "Adam",
@@ -32,20 +32,20 @@ describe('Phonebook Service', () => {
                 city: "Dover",
                 postCode: "CT157FD"
             };
-            const contact = await phonebookService.createNew(payload);
+            const contact = await phonebookService.createContact(payload);
 
             expect(contact).toHaveProperty('id');
             expect(contact.id).toBe(3);
         });
     });
 
-    describe('update', () => {
+    describe('updateContact', () => {
         test('should update existing contact detail', async () => {
             const payload = {
                 id: 1,
                 phoneNumber: "07000000444"
             };
-            const contact = await phonebookService.update(payload);
+            const contact = await phonebookService.updateContact(payload);
 
             const { firstName, lastName, phoneNumber, postCode } = contact;
             expect(firstName).toBe('John');
@@ -59,10 +59,25 @@ describe('Phonebook Service', () => {
                 phoneNumber: "07000000444"
             };
             try {
-                await phonebookService.update(payload);
+                await phonebookService.updateContact(payload);
             } catch (error) {
                 expect(error.statusCode).toBe(400);
             }
         });
     });
+
+    describe('deleteContact', () => {
+        test('should delete an existing contact', async () => {
+            const id = 1;
+            let list = await phonebookService.fetchAll();
+
+            expect(list.length).toBe(3);
+
+            await phonebookService.deleteContact(id);
+            list = await phonebookService.fetchAll();
+
+            expect(list.length).toBe(2);
+
+        });
+    })
 });
