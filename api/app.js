@@ -20,8 +20,4 @@ app.get('/', (req, res) => {
 
 ErrorMiddleWare(app);
 
-app.use((err, req, res, next) => {
-    res.sendStatus(500);
-});
-
 module.exports = app;

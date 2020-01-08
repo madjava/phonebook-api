@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../../api/app');
+const PhonebookError = require('../../api/errors/phonebook.error');
 const contactData = require('../fixtures/contact.data.json');
 const phonebookService = require('../../api/services/phonebook.service');
 jest.mock('../../api/services/phonebook.service');
@@ -19,23 +20,21 @@ describe('Phonebook API', () => {
         });
     });
 
-    describe('POST: /api/contact', () => {
-        beforeEach(() => {
-            phonebookService
-                .fetchContact
-                .mockReturnValue(contactData[0]);
-        });
-        afterEach(() => {
+    describe('GET: /api/contact/:phonenumber', () => {
+        afterAll(() => {
             phonebookService
                 .fetchContact
                 .mockReset();
         });
 
         test('should fetch the correct contact detail', () => {
-            const phoneNumber = '07000000111';
+            phonebookService
+                .fetchContact
+                .mockReturnValueOnce(Promise.resolve(contactData[0]));
+
+            const phonenumber = '07000000111';
             return request(app)
-                .post('/api/contact')
-                .send({ phoneNumber })
+                .get(`/api/contact/${phonenumber}`)
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .expect((response) => {
@@ -47,11 +46,41 @@ describe('Phonebook API', () => {
                 });
         });
 
-        test('should return 400 if phoneNumber is not provided', (done) => {
-             request(app)
-                .post('/api/contact')
-                .expect(400)
-                .end(done)
+        test('should return 400 if phoneNumber is not found', () => {
+            const invalidNumber = '09234';
+            phonebookService
+                .fetchContact
+                .mockImplementation(() => {
+                    throw new PhonebookError('Request Not Found', 404)
+                });
+
+            return request(app)
+                .get(`/api/contact/${invalidNumber}`)
+                .expect(404);
+        });
+    });
+
+    describe('PUT: /api/contact', () => {
+        test('should create a new phone record when correct payload is sent', () => {
+            const payload = {
+                "firstName": "Adam",
+                "lastName": "Frank",
+                "phoneNumber": "07000000333",
+                "city": "Dover",
+                "postCode": "CT157FD"
+            };
+
+            return request(app)
+                .put('/api/contact')
+                .send(payload)
+                .expect('Content-Type', /json/)
+                .expect(201);
+        });
+
+        test('should return 400 when no payload is sent', () => {
+            return request(app)
+                .put('/api/contact')
+                .expect(400);
         });
     });
 });

@@ -7,7 +7,7 @@ describe('Phonebook Service', () => {
 
             const contact = await phonebookService.fetchContact(phone);
 
-            const {firstName, lastName, phoneNumber, postCode} = contact;
+            const { firstName, lastName, phoneNumber, postCode } = contact;
             expect(firstName).toBe('John');
             expect(lastName).toBe('Doe');
             expect(phoneNumber).toBe('07000000111');
@@ -20,6 +20,28 @@ describe('Phonebook Service', () => {
             const list = await phonebookService.fetchAll();
 
             expect(list.length).toBe(2);
+        });
+    });
+
+    describe('createNew', () => {
+        test('should create a new contact detail with diven payload', async () => {
+            const payload = {
+                firstName: "Adam",
+                lastName: "Frank",
+                phoneNumber: "07000000333",
+                city: "Dover",
+                postCode: "CT157FD"
+            };
+            const contact = await phonebookService.createNew(payload);
+
+            expect(contact).toHaveProperty('id');
+            expect(contact.id).toBe(3);
+        });
+    });
+
+    describe('update', () => {
+        test('should update existing contact detail', () => {
+            
         });
     });
 });
