@@ -18,6 +18,10 @@ app.get('/', (req, res) => {
     res.sendStatus(200);
 });
 
+app.use((req, res) => {
+    res.sendStatus(404);
+});
+
 ErrorMiddleWare(app);
 
 module.exports = app;

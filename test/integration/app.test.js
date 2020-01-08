@@ -20,6 +20,14 @@ describe('Phonebook API', () => {
         });
     });
 
+    describe('GET: /api/contacts', () => {
+        test('should list all the contact details based on provided criteria', async () => {
+            return request(app)
+                .get('/api/contacts')
+                .expect(200);
+        });
+    });
+
     describe('GET: /api/contact/:phonenumber', () => {
         afterAll(() => {
             phonebookService

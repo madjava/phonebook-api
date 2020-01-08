@@ -9,6 +9,16 @@ route.get('/', (req, res) => {
     res.sendStatus(200);
 });
 
+route.get('/contacts', async (req, res, next) => {
+    const { phoneNumber, city, postCode } = req.params;
+    try {
+        const data = await phonebookService.fetchAll({ phoneNumber, city, postCode });
+        res.json(data);
+    } catch (error) {
+        next(error);
+    }
+});
+
 route.get('/contact/:phonenumber', async (req, res, next) => {
     const phonenumber = req.params.phonenumber;
     if (!phonenumber) {
@@ -31,7 +41,7 @@ route.put('/contact', async (req, res, next) => {
         return res.status(400).send(`${contact.id} already exists.`);
     }
     try {
-        contact = phonebookService.createContact(contact);
+        contact = await phonebookService.createContact(contact);
         res.status(201).json(contact);
     } catch (error) {
         next(error);
@@ -47,7 +57,7 @@ route.post('/contact', async (req, res, next) => {
         return res.status(404).send('Invalid Data.');
     }
     try {
-        contact = phonebookService.updateContact(contact);
+        contact = await phonebookService.updateContact(contact);
         res.status(202).json(contact);
     } catch (error) {
         next(error);

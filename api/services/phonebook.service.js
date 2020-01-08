@@ -9,7 +9,7 @@ const fetchContact = async (phoneNumber) => {
     return contact;
 }
 
-const fetchAll = async () => {
+const fetchAll = async (options) => {
     return data;
 }
 
