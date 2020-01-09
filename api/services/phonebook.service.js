@@ -10,8 +10,31 @@ const fetchContact = async (phoneNumber) => {
     }
 }
 
-const fetchAll = async (options) => {
+const fetchAll = async (options) => { // TODO: implement filtering
     return await Contact.find({});
+}
+
+const fetchAllDataFor = async (options) => {
+    return await _returnDataSet(options.filter);
+}
+
+
+const fetchDataFor = async (filter) => {
+    const { city, postCode } = filter;
+    const result = await Contact.find({ city: city, postCode: postCode });
+    return result;
+}
+
+const _returnDataSet = async (prop) => {
+    const filter = {
+        _id: 0
+    };
+    filter[prop] = 1;
+    let result = await Contact.find({}, filter);
+    if (result.length > 0) {
+        return result.map(c => c[prop]);
+    }
+    return [];
 }
 
 const createContact = async (contact) => {
@@ -54,5 +77,7 @@ module.exports = {
     fetchAll,
     createContact,
     updateContact,
-    deleteContact
+    deleteContact,
+    fetchAllDataFor,
+    fetchDataFor
 }

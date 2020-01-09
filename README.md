@@ -62,7 +62,7 @@ Futher request would require the valid token tp be present in the header. Token 
 
 ## Data Endpoints
 
-`GET: /api/contacts`
+`GET: /api/phonebook`
 
 `HEADER:` x-phonebook-token: `<valid-token>`
 
@@ -70,7 +70,7 @@ Futher request would require the valid token tp be present in the header. Token 
 
 --
 
-`GET: /api/contact/:phonenumber`
+`GET: /api/phonebook/:phonenumber`
 
 `HEADER:` x-phonebook-token: `<valid-token>`
 
@@ -89,7 +89,7 @@ Futher request would require the valid token tp be present in the header. Token 
 
 --
 
-`PUT: /api/contact`
+`PUT: /api/phonebook`
 
 `HEADER:` x-phonebook-token: `<valid-token>`
 
@@ -109,7 +109,7 @@ Futher request would require the valid token tp be present in the header. Token 
 
 --
 
-`DELETE: /api/contact/:id`
+`DELETE: /api/phonebook/:id`
 
 `HEADER:` x-phonebook-token: `<valid-token>`
 

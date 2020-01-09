@@ -35,7 +35,7 @@ describe('Phonebook Service', () => {
 
         test('should return all contact details', async () => {
             const list = await phonebookService.fetchAll();
-            expect(list.length).toBe(db.MAX_DATA);
+            expect(list).toHaveLength(db.MAX_DATA);
         });
     });
 
@@ -90,12 +90,12 @@ describe('Phonebook Service', () => {
             const id = testdata3._id;
 
             let list = await phonebookService.fetchAll();
-            expect(list.length).toBe(4);
+            expect(list).toHaveLength(4);
 
             await phonebookService.deleteContact(id);
 
             list = await phonebookService.fetchAll();
-            expect(list.length).toBe(3);
+            expect(list).toHaveLength(3);
 
             expect(async () => {
                 try {
@@ -103,8 +103,32 @@ describe('Phonebook Service', () => {
                 } catch (error) {
                     expect(error instanceof PhonebookError).toBe(true);
                 }
-            });    
+            });
 
         });
-    })
+    });
+
+    describe('fetchAllDataFor', () => {
+        test('should return cities in phonebook', async () => {
+            const result = await phonebookService.fetchAllDataFor({ filter: 'city' });
+            expect(result).toHaveLength(3);
+        });
+
+        test('should return postCodes in phonebook', async () => {
+            const result = await phonebookService.fetchAllDataFor({ filter: 'postCode' });
+            expect(result).toHaveLength(3);
+        });
+    });
+
+    describe('fetchDataFor', () => {
+        test('should return phonebook data base on filter', async () => {
+            const testcontact = testdata[0];
+            const filter = {
+                city: testcontact.city,
+                postCode: testcontact.postCode
+            }
+            const result = await phonebookService.fetchDataFor(filter);
+            expect(result).toHaveLength(1);
+        });
+    });
 });

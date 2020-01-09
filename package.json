@@ -6,7 +6,7 @@
   "scripts": {
     "start": "env-cmd node index.js",
     "test": "env-cmd jest -i",
-    "test-watch": "env-cmd jest  -i -c --watch --verbose"
+    "test-watch": "env-cmd jest -i -c --watch --verbose"
   },
   "jest": {
     "testEnvironment": "node"

@@ -68,11 +68,11 @@ describe('Phonebook API', () => {
         });
     });
 
-    describe('GET: /api/contacts', () => {
+    describe('GET: /api/phonebook', () => {
         test('should list all the contact details based on provided criteria', async () => {
             const test1 = testdata[0];
             return request(app)
-                .get('/api/contacts')
+                .get('/api/phonebook')
                 .set(X_PHONEBOOK_TOKEN, validToken)
                 .expect(200)
                 .expect((response) => {
@@ -83,11 +83,58 @@ describe('Phonebook API', () => {
         });
     });
 
-    describe('GET: /api/contact/:phonenumber', () => {
+    describe('GET: /api/phonebook/cities', () => {
+        test('should list all the cities in the database', async () => {
+            const cities = testdata.map(t => t.city);
+            return request(app)
+                .get('/api/phonebook/cities')
+                .set(X_PHONEBOOK_TOKEN, validToken)
+                .expect(200)
+                .expect((response) => {
+                    const data = response.body;
+                    expect(data.length).toBe(cities.length);
+                });
+        });
+    });
+
+    describe('GET: /api/phonebook/postcodes', () => {
+        test('should list all the postcodes in the database', async () => {
+            const postcodes = testdata.map(t => t.postCode);
+            return request(app)
+                .get('/api/phonebook/postcodes')
+                .set(X_PHONEBOOK_TOKEN, validToken)
+                .expect(200)
+                .expect((response) => {
+                    const data = response.body;
+                    expect(data.length).toBe(postcodes.length);
+                });
+        });
+    });
+
+    describe('GET: /api/phonebook/:city/:postCode', () => {
+        test('should list all the phone number in a city under a postcode in the database', async () => {
+            const contactData = testdata[0];
+            return request(app)
+                .get(`/api/phonebook/${contactData.city}/${contactData.postCode}`)
+                .set(X_PHONEBOOK_TOKEN, validToken)
+                .expect(200)
+                .expect((response) => {
+                    const data = response.body;
+                    const { firstName, lastName, phoneNumber, postCode } = data[0];
+                    expect(data.length).toBe(1);
+                    expect(firstName).toBe(contactData.firstName);
+                    expect(lastName).toBe(contactData.lastName);
+                    expect(phoneNumber).toBe(contactData.phoneNumber);
+                    expect(postCode).toBe(contactData.postCode);
+                }); 
+        });
+    });
+
+    describe('GET: /api/phonebook/:phonenumber', () => {
         test('should fetch the correct contact detail', () => {
             const contactData = testdata[0];
             return request(app)
-                .get(`/api/contact/${contactData.phoneNumber}`)
+                .get(`/api/phonebook/${contactData.phoneNumber}`)
                 .set(X_PHONEBOOK_TOKEN, validToken)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -103,13 +150,13 @@ describe('Phonebook API', () => {
         test('should return 404 if phoneNumber is not found', () => {
             const invalidNumber = '09234';
             return request(app)
-                .get(`/api/contact/${invalidNumber}`)
+                .get(`/api/phonebook/${invalidNumber}`)
                 .set(X_PHONEBOOK_TOKEN, validToken)
                 .expect(404);
         });
     });
 
-    describe('PUT: /api/contact', () => {
+    describe('PUT: /api/phonebook', () => {
         test('should create a new phone record when correct payload is sent', () => {
             const payload = {
                 firstName: "Adam",
@@ -120,7 +167,7 @@ describe('Phonebook API', () => {
             };
 
             return request(app)
-                .put('/api/contact')
+                .put('/api/phonebook')
                 .set(X_PHONEBOOK_TOKEN, validToken)
                 .send(payload)
                 .expect('Content-Type', /json/)
@@ -134,13 +181,13 @@ describe('Phonebook API', () => {
 
         test('should return 400 when no payload is sent', () => {
             return request(app)
-                .put('/api/contact')
+                .put('/api/phonebook')
                 .set(X_PHONEBOOK_TOKEN, validToken)
                 .expect(400);
         });
     });
 
-    describe('POST: /contact', () => {
+    describe('POST: /phonebook', () => {
         test('should update contact detail when valid input is provided', () => {
             const contact = testdata[1];
             const previousPhoneNumber = contact.phoneNumber;
@@ -149,7 +196,7 @@ describe('Phonebook API', () => {
                 phoneNumber: "07000000444"
             };
             return request(app)
-                .post('/api/contact')
+                .post('/api/phonebook')
                 .set(X_PHONEBOOK_TOKEN, validToken)
                 .send(payload)
                 .expect(202)
@@ -161,11 +208,11 @@ describe('Phonebook API', () => {
         });
     });
 
-    describe('DELETE: /contact/:id', () => {
+    describe('DELETE: /phonebook/:id', () => {
         test('should remove the requested contact detail', () => {
             const testcontact = testdata[0];
             return request(app)
-                .delete(`/api/contact/${testcontact._id}`)
+                .delete(`/api/phonebook/${testcontact._id}`)
                 .set(X_PHONEBOOK_TOKEN, validToken)
                 .expect(200);
         });
