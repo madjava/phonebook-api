@@ -26,6 +26,9 @@ route.get('/contact/:phonenumber', async (req, res, next) => {
     }
     try {
         const contact = await phonebookService.fetchContact(phonenumber);
+        if(!contact) {
+            return res.sendStatus(404);
+        }
         res.json(contact);
     } catch (error) {
         next(error);
@@ -36,9 +39,6 @@ route.put('/contact', async (req, res, next) => {
     let contact = req.body;
     if (!contact || !contact.phoneNumber) {
         return res.status(400).send('Valid Data Required');
-    }
-    if (contact && contact.id) {
-        return res.status(400).send(`${contact.id} already exists.`);
     }
     try {
         contact = await phonebookService.createContact(contact);
