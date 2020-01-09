@@ -20,4 +20,10 @@ const contactSchema = new Schema({
     }
 });
 
+contactSchema.methods.toJSON = function () {
+    let obj = this.toObject();
+    delete obj.__v;
+    return obj;
+}
+
 module.exports = mongoose.model('contacts', contactSchema);

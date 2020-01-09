@@ -50,14 +50,11 @@ route.put('/contact', async (req, res, next) => {
 
 route.post('/contact', async (req, res, next) => {
     let contact = req.body;
-    if (!contact) {
-        return res.status(400).send('Valid Data Required');
-    }
-    if (contact && !contact.id) {
-        return res.status(404).send('Invalid Data.');
-    }
     try {
         contact = await phonebookService.updateContact(contact);
+        if(!contact){
+            return res.sendStatus(400);
+        }
         res.status(202).json(contact);
     } catch (error) {
         next(error);

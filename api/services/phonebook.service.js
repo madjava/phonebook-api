@@ -31,7 +31,7 @@ const updateContact = async (contactData) => {
     try {
         const _id = contactData._id;
         delete contactData._id;
-        contactData = await Contact.findByIdAndUpdate(_id, contactData, { upsert: false });
+        contactData = await Contact.findOneAndUpdate({ _id }, contactData, { new: true, lean: true, omitUndefined: false });
         return contactData;
     } catch (error) {
         throw new PhonebookError('Bad Requset', 400);
@@ -43,7 +43,7 @@ const deleteContact = async (id) => {
         throw new PhonebookError('Invalid Data', 400);
     }
     try {
-        await Contact.deleteOne({_id: id});
+        await Contact.deleteOne({ _id: id });
     } catch (error) {
         throw new PhonebookError('Bad Request', 400);
     }

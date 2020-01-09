@@ -1,6 +1,6 @@
 module.exports = class PhonebookError {
-    constructor(message, statusCode = 404) {
+    constructor(message, statusCode) {
         this.message = message;
-        this.statusCode = statusCode;
+        this.statusCode = statusCode || 404;
     }
 }

@@ -16,7 +16,8 @@ async function init() {
 
     const mongooseOpts = {
         useUnifiedTopology: true,
-        useNewUrlParser: true
+        useNewUrlParser: true,
+        useFindAndModify: false
     };
 
     mongoose.connect(mongoUri, mongooseOpts);
