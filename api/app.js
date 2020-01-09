@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+const endpoints_info = fs.readFileSync(path.join(__dirname, '../data/endpoints.txt'), {encoding: 'utf8'});
 const express = require('express');
 const app = express();
 const helmet = require('helmet');
@@ -6,7 +9,6 @@ const cors = require('cors');
 const phoneBookRoutes = require('./routes/phonebook');
 const ErrorMiddleWare = require('./middlewares/error.middleware');
 const { authMiddleware, validateMiddleware } = require('./middlewares/authmiddleware');
-
 const X_PHONEBOOK_REQUESTER = process.env.X_PHONEBOOK_REQUESTER || 'cGhvbmVib29rYXBp';
 
 app.use(helmet());
@@ -22,7 +24,7 @@ app.get('/auth', authMiddleware, (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.sendStatus(200);
+    res.send(endpoints_info);
 });
 
 app.use((req, res) => {

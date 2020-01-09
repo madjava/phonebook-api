@@ -1,0 +1,17 @@
+Phonebook API hosts the following endpoints:
+
+    "GET": "/auth"
+
+    "GET": "/api/phonebook"
+
+    "GET": "/api/phonebook/:phonenumber"
+
+    "PUT": "/api/phonebook"
+
+    "DELETE": "/api/phonebook/:id"
+
+    "GET": "/api/phonebook/cities"
+
+    "GET": "/api/phonebook/postcodes"
+
+    "GET": "/api/phonebook/:city/:postcode"

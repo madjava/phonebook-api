@@ -1,19 +1,31 @@
 # Phonebook API
 
-The Phoobook API is a simple web serivce to find contact details.
+The Phoobook API is a simple web serivce to find contact details from a phonebook database.
 
 It supports `create`, `read`, `update` and `delete` operations.
 
-It also sits behind JWT authentication, this has been implemented in a simple way for easy review and understanding using baisc authentication.
+It sits behind [JWT](https://jwt.io/) authentication, this has been implemented in a simple way for easy review and understanding using basic authentication.
 
 ## Setup
 
-Check or download the project files from [Phonebook API](https://github.com/madjava/phonebook-api.git) on Github. `Note:` [Node.js](https://nodejs.org/en/) must have been installed on the machine
+Check or download the project files from [Phonebook API](https://github.com/madjava/phonebook-api.git) on Github. [Node.js](https://nodejs.org/en/) must have been installed on the machine. I developed this on `v11.8.0`
 
-In the rook folder run
+In the root folder run
 
 ```bash
-npm i
+npm install
+```
+
+This will download all the requireed libraies from [NPM](https://www.npmjs.com/)
+
+## Test
+
+[Jest](https://jestjs.io/) was used are the test runner for this project.
+
+To run all test cases run
+
+```bash
+npm test
 ```
 
 ## Start up
@@ -30,13 +42,15 @@ This will start the service on port `9002`. To use a different port run
 PORT=<your port> npm start
 ```
 
+Or update the **`PORT`** environment variable in the `.env` file in the root folder
+
 ## Database
 
-On startup the service will attempt to load some default data for use in the application. Data generation was done with the help of [Faker](https://www.npmjs.com/package/faker).
+On startup the service will attempt to load some default data for use after the service is up and runnning. Data generation was done with the help of [Faker](https://www.npmjs.com/package/faker).
 
 The default database is an in-memory [MongoDb](https://www.mongodb.com/what-is-mongodb) database and was made possible by the use of the [mongodb-memory-server](https://www.npmjs.com/package/mongodb-memory-server) library.
 
-It loads by default 100 records. If you want more data generated then start the server with the environment variable like so
+It loads by default `100` records. If you want more data generated then start the server with the environment variable like so or update the `MAX_RECORDS` environment variable in the `.env` file
 
 ```bash
 MAX_RECORDS=<your option> npm start
@@ -48,11 +62,11 @@ MAX_RECORDS=<your option> npm start
 
 All endpoints sit behind [JWT](https://jwt.io/) authentication and would require a valid token to fill user request.
 
-This token can is requested by sending a `x-phonebook-requester` header to the /auth endpoint. For demo reasons only, your x-phonebook-requester key is logged to console on application startup
+This token is requested by sending a `x-phonebook-requester` in the header with a specific super secrete key to the `/auth` endpoint. For demo reasons only, your `x-phonebook-requester` key is logged to console on application startup. You can also find this value in the `.env` file. Idealy this would be passed via the host server environment variables.
 
-Futher request would require the valid token tp be present in the header. Token is valid for 12 hours so you can keep a referrence to it while having a play.
+Futher request would require the valid token to be present in the header. Token is valid for 12 hours so you can keep a referrence to it while having a play.
 
-### Authentication Endpoints
+## Authentication Endpoints
 
 `GET: /auth`
 
@@ -102,7 +116,7 @@ Futher request would require the valid token tp be present in the header. Token 
     "phoneNumber": "0391 004 1888",
     "city": "South Cassiemouth",
     "postCode": "FP1 8ED"
-    }
+}
 ```
 
 `RESPONSE:` The newly create record, this data would have an `_id` property.
@@ -117,10 +131,54 @@ Futher request would require the valid token tp be present in the header. Token 
 
 --
 
+`GET: /api/phonebook/cities`
+
+`HEADER:` x-phonebook-token: `<valid-token>`
+
+`RESPONSE:` A list of all cities in the database
+
+--
+
+`GET: /api/phonebook/postcodes`
+
+`HEADER:` x-phonebook-token: `<valid-token>`
+
+`RESPONSE:` A list of all postcodes in the database
+
+--
+
+`GET: /api/phonebook/:city/:postcode`
+
+`HEADER:` x-phonebook-token: `<valid-token>`
+
+`RESPONSE:` A list of all records with city and postcode in the database
+
+```json
+[
+    {
+    "_id": "5e17788de925872185a6807f",
+    "firstName": "Jacinthe",
+    "lastName": "Hirthe",
+    "phoneNumber": "0117 115 5142",
+    "city": "Doloresstad",
+    "postCode": "FL9 8EN"
+},
+{...}
+]
+```
+
+--
+
+## Environment Variables
+
+You will find some environent variable is the `.env` file in the root folder. [env-cmd](https://www.npmjs.com/package/env-cmd) is used to manage this for local development and testing
+
 ## Comments on the project
 
-* Authenication could have been implemented with oAuth, opted in to use a simpler process via baisic authorication for this project to simplyfy technical discussions around authentication
+* Other authenication techniques such as oAuth can be used, opted in to use a simpler JWT authentication process via simple authorisation process for this project to simplify for technical discussions.
 
-* Database in in memory, this is not how it should be in production. Idealy should be using another runing mongodb instace. THis project aims to simplefy so anyone setting up would not have to worry about data/database
+* Database is in-memory, this is not how it should be in production. Idealy should be using another running mongodb instance or a service such as [MongoDB Atlas](https://www.mongodb.com/) if MongoDb is you Db of choice. This project aims to simplify so anyone setting up would not have to worry about data/database.
 
 * Environment variable are either harcoded or passed when running the application. Idealy this would come from the environmet the application is runing in in a live environment.
+
+* Limits on josn response and data pagination have to be enhanced in a production ready app. Data set is small in the project and would not clog the pipe.

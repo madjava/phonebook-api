@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const db = require('../db/test.connection');
 const app = require('../../api/app');
 const PhonebookError = require('../../api/errors/phonebook.error');
-const { } = require('../../api/middlewares/authmiddleware');
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
+jest.setTimeout(10000);
 let testata = [];
 const X_PHONEBOOK_REQUESTER = process.env.X_PHONEBOOK_REQUESTER || 'cGhvbmVib29rYXBp';
 const X_PHONEBOOK_TOKEN = 'x-phonebook-token';
@@ -126,7 +127,7 @@ describe('Phonebook API', () => {
                     expect(lastName).toBe(contactData.lastName);
                     expect(phoneNumber).toBe(contactData.phoneNumber);
                     expect(postCode).toBe(contactData.postCode);
-                }); 
+                });
         });
     });
 

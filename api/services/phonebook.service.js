@@ -20,8 +20,8 @@ const fetchAllDataFor = async (options) => {
 
 
 const fetchDataFor = async (filter) => {
-    const { city, postCode } = filter;
-    const result = await Contact.find({ city: city, postCode: postCode });
+    filter = {...filter};
+    const result = await Contact.find(filter);
     return result;
 }
 
