@@ -17,7 +17,7 @@ const createContact = async (contact) => {
     const newcontact = { ...contact };
     newcontact.id = 3;
     data.push(newcontact);
-    return newcontact;
+    return newcontact; 
 }
 
 const updateContact = async (contactData) => {
