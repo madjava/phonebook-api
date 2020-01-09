@@ -16,7 +16,7 @@ In the root folder run
 npm install
 ```
 
-This will download all the requireed libraies from [NPM](https://www.npmjs.com/)
+This will download all the required libraries from [NPM](https://www.npmjs.com/)
 
 ## Test
 
@@ -28,7 +28,7 @@ To run all test cases run
 npm test
 ```
 
-## Start up
+## Startup
 
 To start the service run
 
@@ -62,9 +62,9 @@ MAX_RECORDS=<your option> npm start
 
 All endpoints sit behind [JWT](https://jwt.io/) authentication and would require a valid token to fill user request.
 
-This token is requested by sending a `x-phonebook-requester` in the header with a specific super secrete key to the `/auth` endpoint. For demo reasons only, your `x-phonebook-requester` key is logged to console on application startup. You can also find this value in the `.env` file. Idealy this would be passed via the host server environment variables.
+This token is requested by sending `x-phonebook-requester` in the header with a specific super secrete key to the `/auth` endpoint. For demo reasons only, your `x-phonebook-requester` key is logged to console on application startup, ssshh!!. You can also find this value in the `.env` file. Idealy this would be passed via the host server environment variables.
 
-Futher request would require the valid token to be present in the header. Token is valid for 12 hours so you can keep a referrence to it while having a play.
+Further requests would require the valid token to be present in the header. Token is valid for 12 hours so you can keep a referrence to it while having a play.
 
 ## Authentication Endpoints
 
@@ -175,10 +175,10 @@ You will find some environent variable is the `.env` file in the root folder. [e
 
 ## Comments on the project
 
-* Other authenication techniques such as oAuth can be used, opted in to use a simpler JWT authentication process via simple authorisation process for this project to simplify for technical discussions.
+* Other authenication techniques such as oAuth can be used, opted in to use a simpler JWT authentication process only via simple authorisation process for this project to simplify for technical discussions.
 
 * Database is in-memory, this is not how it should be in production. Idealy should be using another running mongodb instance or a service such as [MongoDB Atlas](https://www.mongodb.com/) if MongoDb is you Db of choice. This project aims to simplify so anyone setting up would not have to worry about data/database.
 
-* Environment variable are either harcoded or passed when running the application. Idealy this would come from the environmet the application is runing in in a live environment.
+* Environment variable are either harcoded or passed when running the application. Idealy this would come from the environment the application is running outside the dev machine.
 
-* Limits on josn response and data pagination have to be enhanced in a production ready app. Data set is small in the project and would not clog the pipe.
+* Limits on josn response and data pagination are limited.
