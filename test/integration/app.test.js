@@ -3,27 +3,40 @@ const mongoose = require('mongoose');
 const db = require('../db/test.connection');
 const app = require('../../api/app');
 const PhonebookError = require('../../api/errors/phonebook.error');
-const contactData = require('../fixtures/contact.data.json');
+const { } = require('../../api/middlewares/authmiddleware');
 let testata = [];
 const X_PHONEBOOK_REQUESTER = process.env.X_PHONEBOOK_REQUESTER || 'cGhvbmVib29rYXBp';
+const X_PHONEBOOK_TOKEN = 'x-phonebook-token';
+let validToken = '';
 
 describe('Phonebook API', () => {
     beforeAll(async () => {
         await db.init();
         await db.loadTestData();
         testdata = db.getTestData();
+        return request(app)
+            .get('/auth')
+            .set('x-phonebook-requester', X_PHONEBOOK_REQUESTER)
+            .expect((response) => {
+                validToken = response.text;
+            });
     });
     afterAll(async () => {
         await db.cleanUp();
         await mongoose.disconnect();
         await mongoServer.stop();
     });
+
     describe('Auth', () => {
-        test.skip('should return a valid token if correct auth data is provided', () => {
+
+        test('should return a valid token if correct auth data is provided', () => {
             return request(app)
                 .get('/auth')
                 .set('x-phonebook-requester', X_PHONEBOOK_REQUESTER)
-                .expect(200);
+                .expect(200)
+                .expect((response) => {
+                    expect(response.text).toBeTruthy();
+                });
         });
 
         test('should return a 403 if  no auth data is provided', () => {
@@ -50,6 +63,7 @@ describe('Phonebook API', () => {
         test('should hit the base /api route', () => {
             return request(app)
                 .get('/api')
+                .set(X_PHONEBOOK_TOKEN, validToken)
                 .expect(200);
         });
     });
@@ -59,6 +73,7 @@ describe('Phonebook API', () => {
             const test1 = testdata[0];
             return request(app)
                 .get('/api/contacts')
+                .set(X_PHONEBOOK_TOKEN, validToken)
                 .expect(200)
                 .expect((response) => {
                     const data = response.body;
@@ -73,6 +88,7 @@ describe('Phonebook API', () => {
             const contactData = testdata[0];
             return request(app)
                 .get(`/api/contact/${contactData.phoneNumber}`)
+                .set(X_PHONEBOOK_TOKEN, validToken)
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .expect((response) => {
@@ -88,6 +104,7 @@ describe('Phonebook API', () => {
             const invalidNumber = '09234';
             return request(app)
                 .get(`/api/contact/${invalidNumber}`)
+                .set(X_PHONEBOOK_TOKEN, validToken)
                 .expect(404);
         });
     });
@@ -104,6 +121,7 @@ describe('Phonebook API', () => {
 
             return request(app)
                 .put('/api/contact')
+                .set(X_PHONEBOOK_TOKEN, validToken)
                 .send(payload)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -117,6 +135,7 @@ describe('Phonebook API', () => {
         test('should return 400 when no payload is sent', () => {
             return request(app)
                 .put('/api/contact')
+                .set(X_PHONEBOOK_TOKEN, validToken)
                 .expect(400);
         });
     });
@@ -131,6 +150,7 @@ describe('Phonebook API', () => {
             };
             return request(app)
                 .post('/api/contact')
+                .set(X_PHONEBOOK_TOKEN, validToken)
                 .send(payload)
                 .expect(202)
                 .expect((response) => {
@@ -146,6 +166,7 @@ describe('Phonebook API', () => {
             const testcontact = testdata[0];
             return request(app)
                 .delete(`/api/contact/${testcontact._id}`)
+                .set(X_PHONEBOOK_TOKEN, validToken)
                 .expect(200);
         });
     });

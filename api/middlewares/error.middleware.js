@@ -12,7 +12,7 @@ function errorLogger(err, req, res, next) {
 
 function phonebookError(err, req, res, next) {
     if (err instanceof PhonebookError) {
-        res.status(err.statusCode).send(err.message);
+        return res.status(err.statusCode).send(err.message);
     }
     next();
 }

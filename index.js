@@ -18,5 +18,5 @@ try {
 
 server.listen(PORT, () => {
     console.log(`Phonebook API Service running on ${PORT}`);
-    console.log(process.env.X_PHONEBOOK_REQUESTER);
+    console.log(`Your x-phonebook-requester key is: ${process.env.X_PHONEBOOK_REQUESTER}`);
 });

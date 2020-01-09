@@ -48,9 +48,9 @@ MAX_RECORDS=<your option> npm start
 
 All endpoints sit behind [JWT](https://jwt.io/) authentication and would require a valid token to fill user request.
 
-This token can is requested by sending a `x-phonebook-requester` header to the /auth endpoint.
+This token can is requested by sending a `x-phonebook-requester` header to the /auth endpoint. For demo reasons only, your x-phonebook-requester key is logged to console on application startup
 
-Futher request would require the valid token tp be present in the header.
+Futher request would require the valid token tp be present in the header. Token is valid for 12 hours so you can keep a referrence to it while having a play.
 
 ### Authentication Endpoints
 
@@ -64,7 +64,7 @@ Futher request would require the valid token tp be present in the header.
 
 `GET: /api/contacts`
 
-`HEADER:` token: valid token
+`HEADER:` x-phonebook-token: `<valid-token>`
 
 `RESPONSE:` All the phone contact details
 
@@ -72,7 +72,7 @@ Futher request would require the valid token tp be present in the header.
 
 `GET: /api/contact/:phonenumber`
 
-`HEADER:` token: valid token
+`HEADER:` x-phonebook-token: `<valid-token>`
 
 `RESPONSE:` Details for the record by phone number. e.g
 
@@ -91,7 +91,7 @@ Futher request would require the valid token tp be present in the header.
 
 `PUT: /api/contact`
 
-`HEADER:` token: valid token
+`HEADER:` x-phonebook-token: `<valid-token>`
 
 `PAYLOAD:` The new record to create
 
@@ -111,7 +111,7 @@ Futher request would require the valid token tp be present in the header.
 
 `DELETE: /api/contact/:id`
 
-`HEADER:` token: valid token
+`HEADER:` x-phonebook-token: `<valid-token>`
 
 `RESPONSE:` 200 OK status or relevant status on error
 
