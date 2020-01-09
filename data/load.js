@@ -14,7 +14,7 @@ const loadData = async () => {
     log(chalk.dim('\n'));
 
     for (let i = 0; i < MAX_RECORDS; i++) {
-        const contact = new Contact(generateContact(i));
+        const contact = new Contact(generateContact());
         try { await contact.save(); } catch (e) { console.log(e); }
     }
 
@@ -24,9 +24,8 @@ const loadData = async () => {
     log(chalk.dim('\n'));
 }
 
-const generateContact = (id) => {
+const generateContact = () => {
     return {
-        id,
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         phoneNumber: faker.phone.phoneNumber(),

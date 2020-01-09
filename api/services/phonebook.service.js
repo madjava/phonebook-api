@@ -1,38 +1,52 @@
-let data = require('../../data/contacts.json');
+const Contact = require('../../db/models/contact.model');
 const PhonebookError = require('../errors/phonebook.error');
 
 const fetchContact = async (phoneNumber) => {
-    const contact = data.find(c => c.phoneNumber === phoneNumber);
-    if (!contact) {
+    try {
+        const contact = await Contact.findOne({ phoneNumber });
+        return contact;
+    } catch (error) {
         throw new PhonebookError('Request Not Found', 404);
     }
-    return contact;
 }
 
 const fetchAll = async (options) => {
-    return data;
+    return await Contact.find({});
 }
 
 const createContact = async (contact) => {
-    const newcontact = { ...contact };
-    newcontact.id = 3;
-    data.push(newcontact);
-    return newcontact; 
+    try {
+        contact = new Contact(contact);
+        contact.save();
+        return contact;
+    } catch (error) {
+        throw new PhonebookError('Bad Requset', 400);
+    }
 }
 
 const updateContact = async (contactData) => {
-    if (!contactData || !contactData.id) {
+    if (!contactData || !contactData._id) {
         throw new PhonebookError('Invalid Data', 400);
     }
-    let contact = data.find(c => c.id === contactData.id);
-    return Object.assign(contact, contactData);
+    try {
+        const _id = contactData._id;
+        delete contactData._id;
+        contactData = await Contact.findByIdAndUpdate(_id, contactData, { upsert: false });
+        return contactData;
+    } catch (error) {
+        throw new PhonebookError('Bad Requset', 400);
+    }
 }
 
 const deleteContact = async (id) => {
-    if(!id) {
+    if (!id) {
         throw new PhonebookError('Invalid Data', 400);
     }
-    data = data.filter(c => c.id !== id);
+    try {
+        await Contact.deleteOne({_id: id});
+    } catch (error) {
+        throw new PhonebookError('Bad Request', 400);
+    }
 }
 
 module.exports = {
