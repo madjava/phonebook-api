@@ -68,7 +68,7 @@ describe('Phonebook Service', () => {
             const { firstName, lastName, phoneNumber, postCode } = contact;
             expect(firstName).toBe(testdata1.firstName);
             expect(lastName).toBe(testdata1.lastName);
-            expect(phoneNumber).toBe(testdata1.phoneNumber);
+            expect(phoneNumber).toBe(payload.phoneNumber);
             expect(postCode).toBe(testdata1.postCode);
         });
 

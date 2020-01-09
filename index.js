@@ -18,4 +18,5 @@ try {
 
 server.listen(PORT, () => {
     console.log(`Phonebook API Service running on ${PORT}`);
+    console.log(process.env.X_PHONEBOOK_REQUESTER);
 });

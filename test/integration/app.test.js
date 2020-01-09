@@ -5,6 +5,7 @@ const app = require('../../api/app');
 const PhonebookError = require('../../api/errors/phonebook.error');
 const contactData = require('../fixtures/contact.data.json');
 let testata = [];
+const X_PHONEBOOK_REQUESTER = process.env.X_PHONEBOOK_REQUESTER || 'cGhvbmVib29rYXBp';
 
 describe('Phonebook API', () => {
     beforeAll(async () => {
@@ -18,12 +19,24 @@ describe('Phonebook API', () => {
         await mongoServer.stop();
     });
     describe('Auth', () => {
-        test('should return a valid token if correct auth data is provided', () => {
-            fail('Not implemented');
+        test.skip('should return a valid token if correct auth data is provided', () => {
+            return request(app)
+                .get('/auth')
+                .set('x-phonebook-requester', X_PHONEBOOK_REQUESTER)
+                .expect(200);
         });
 
-        test('should return a 403 if incorrect or no auth data is provided', () => {
-            fail('Not implemented');
+        test('should return a 403 if  no auth data is provided', () => {
+            return request(app)
+                .get('/auth')
+                .expect(403);
+        });
+
+        test('should return a 403 if incorrect  auth data is provided', () => {
+            return request(app)
+                .get('/auth')
+                .set('x-phonebook-requester', 'incorrectvalue')
+                .expect(403);
         });
     });
 
@@ -127,7 +140,6 @@ describe('Phonebook API', () => {
                 });
         });
     });
-
 
     describe('DELETE: /contact/:id', () => {
         test('should remove the requested contact detail', () => {

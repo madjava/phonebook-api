@@ -4,22 +4,28 @@
   "description": "Code Challange - Phonebook API",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "jest -i",
-    "test-watch": "jest  -i -c --watch --verbose"
+    "start": "env-cmd node index.js",
+    "test": "env-cmd jest -i",
+    "test-watch": "env-cmd jest  -i -c --watch --verbose"
   },
   "jest": {
     "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madjava/phonebook-api.git"
   },
   "keywords": [],
   "author": "Felix E. Eyetan",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^24.0.25",
+    "env-cmd": "^10.0.1",
     "jest": "^24.9.0",
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "atob": "^2.1.2",
     "chalk": "^3.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",

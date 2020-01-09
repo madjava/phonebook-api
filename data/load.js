@@ -2,7 +2,7 @@ const chalk = require('chalk');
 const faker = require('faker');
 faker.locale = 'en_GB';
 const log = console.log;
-const MAX_RECORDS = process.env.MAX_RECORDS || 100;
+const MAX_RECORDS = +process.env.MAX_RECORDS || 100;
 
 const Contact = require('../db/models/contact.model');
 

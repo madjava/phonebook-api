@@ -6,7 +6,7 @@ const faker = require('faker');
 const log = console.log;
 faker.locale = 'en_GB';
 let testData = [];
-const MAX_DATA = 3;
+const MAX_DATA = +process.env.MAX_DATA || 3;
 
 async function init() {
     const mongoUri = await mongoServer.getUri();

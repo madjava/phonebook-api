@@ -48,14 +48,16 @@ MAX_RECORDS=<your option> npm start
 
 All endpoints sit behind [JWT](https://jwt.io/) authentication and would require a valid token to fill user request.
 
-This token can is requested by sending a Basic Authorization header to the /auth endpoint.
+This token can is requested by sending a `x-phonebook-requester` header to the /auth endpoint.
 
 Futher request would require the valid token tp be present in the header.
 
 ### Authentication Endpoints
 
 `GET: /auth`
-`HEADER:` Authorization: Basic xxxxx-xxxxx
+
+`HEADER:` **x-phonebook-requester**: **`cGhvbmVib29rYXBp`**
+
 `RESPONSE:` A valid JWT token
 
 ## Data Endpoints
